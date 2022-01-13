@@ -34,13 +34,14 @@ function randomWord() {
 }
 
 
+/*  Splits the answer and maps the array and checks if the letter exsists in each individual guessed array of letters */
 function guessedWord() {
     wordStatus = answer.split('').map(letter => (guessed.indexOf(letter) >= 0 ? letter : " _ ")).join('');
   
     document.getElementById('wordSpotlight').innerHTML = wordStatus;
 }
 
-
+/* DRY method of creating the keyboard instead of using html divs */
 function generateButtons() {
     let buttonsHTML = 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter =>
       `
@@ -58,7 +59,7 @@ function generateButtons() {
 
 document.getElementById("maxWrong").innerHTML = maxWrong;
 
-
+/* Checking if passed chosenLetter exsists, if it does we do nothing and if it does not we push the guessed chosenLetter into the aray */
 function handleGuess(chosenLetter) {
     guessed.indexOf(chosenLetter) === -1 ? guessed.push(chosenLetter) : null;
     document.getElementById(chosenLetter).setAttribute('disabled', true);
@@ -78,6 +79,7 @@ function handleGuess(chosenLetter) {
 function checkIfGameWon() {
     if (wordStatus === answer) {
         document.getElementById("keyboard").innerHTML = "Congrats, You Won!"
+        document.getElementById("text").innerHTML = ""
     }
 }
 
@@ -86,6 +88,7 @@ function checkIfGameLost() {
     if (mistakes === maxWrong) {
         document.getElementById('wordSpotlight').innerHTML = 'The answer was: ' + answer;
         document.getElementById("keyboard").innerHTML = "You Lost!"
+        document.getElementById("text").innerHTML = ""
     }
 }
 
@@ -97,18 +100,6 @@ function updateMistakes() {
 
 function updateHangmanPicture() {
     document.getElementById('hangmanImage').src = './images/' + mistakes + '.png';
-}
-
-
-function reset() {
-    mistakes = 0;
-    guessed = [];
-    document.getElementById('hangmanImage').src = './images/0.png';
-  
-    randomWord();
-    guessedWord();
-    updateMistakes();
-    generateButtons();
 }
 
 
